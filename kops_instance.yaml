@@ -1,0 +1,59 @@
+---
+- name: Setup Kops host that create k8s cluster
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Create ec2 key
+      ec2_key:
+        name: kops-key
+        region: "{{region}}"
+      register: key_out
+    
+    - name: Save private key into file kops-key.pem
+      copy:
+        content: "{{key_out.key.private_key}}"
+        dest: "./kops-key.pem"
+        mode: 0600
+      when: key_out.changed
+
+    - name: Create security group for kops host
+      ec2_group:
+        name: kops-host-sg
+        description: Allow port 22 from My IP
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{MYIP}}"
+      register: kopsSG_out
+
+    - name: Create kops host
+      ec2:
+        key_name: kops-key
+        region: "{{region}}"
+        instance_type: t2.micro
+        image: "{{kops_ami}}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: "kops_host"
+          Project: kops-k8s
+          Owner: Tuguldur B
+        exact_count: 1
+        count_tag:
+          Name: "kops_host"
+          Project: kops-k8s
+          Owner: Tuguldur B
+        group_id: "kopsSG_out.group_id"
+        vpc_subnet_id: "{{subnetid}}"
+      register: kopsHost_out
+
+    - name: Insert/Update "kopsHostSGid" in vars/output_vars
+      blockinfile:
+        path: vars/output_vars
+        backup: yes
+        block: |
+          kopsHostSGid: {{kopsHost_out.group_id}}

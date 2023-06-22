@@ -1,0 +1,17 @@
+# Region Name
+region: "ap-southeast-1"
+
+# Zone Names
+zone1: ap-southeast-1a
+zone2: ap-southeast-1b
+zone3: ap-southeast-1c
+
+state: present
+
+# Bastion Vars
+kops_ami: ami-002843b0a9e09324a
+MYIP: 202.131.227.213/32
+
+# VPC
+vpcid: vpc-046d27ca560071a34
+subnetid: subnet-0b69858e7c3da2ff4
