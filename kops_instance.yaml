@@ -6,7 +6,7 @@
   tasks:
     - name: Import setup vaiables
       include_vars: vars/instance_setup
-      
+
     - name: Create ec2 key
       ec2_key:
         name: kops-key
@@ -50,7 +50,7 @@
           Name: "kops_host"
           Project: kops-k8s
           Owner: Tuguldur B
-        group_id: "kopsSG_out.group_id"
+        group_id: "{{kopsSG_out.group_id}}"
         vpc_subnet_id: "{{subnetid}}"
       register: kopsHost_out
 
