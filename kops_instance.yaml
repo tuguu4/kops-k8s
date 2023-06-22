@@ -7,6 +7,9 @@
     - name: Import setup vaiables
       include_vars: vars/instance_setup
 
+    - name: Import variables output file
+      include_vars: vars/output_vars
+
     - name: Create ec2 key
       ec2_key:
         name: kops-key
