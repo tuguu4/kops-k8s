@@ -83,6 +83,5 @@
         state: running
         wait: yes
         wait_timeout: 300
-        exact_count: 1
         group_id: "{{kopsSG_out.group_id}}"
         vpc_subnet_id: "{{subnetid}}"
