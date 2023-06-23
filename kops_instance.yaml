@@ -57,6 +57,9 @@
         vpc_subnet_id: "{{subnetid}}"
       register: kopsHost_out
 
+    - debug:
+        var: kopsHost_out
+
     - name: Insert/Update "kopsSGid" in vars/output_vars
       blockinfile:
         path: vars/output_vars
@@ -64,9 +67,9 @@
         block: |
           kopsSGid: {{kopsSG_out.group_id}}
 
-    - name: Insert/Update "kopsHostid" in vars/output_vars
-      blockinfile:
-        path: vars/output_vars
-        backup: yes
-        block: |
-          kopsHostid: {{kopsHost_out.group_id}}
+##    - name: Insert/Update "kopsHostid" in vars/output_vars
+##      blockinfile:
+##        path: vars/output_vars
+##        backup: yes
+##        block: |
+##          kopsHostid: {{kopsHost_out.group_id}}
