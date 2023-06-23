@@ -85,3 +85,27 @@
         wait_timeout: 300
         group_id: "{{kopsSG_out.group_id}}"
         vpc_subnet_id: "{{subnetid}}"
+
+    - name: Copy login key to k8s-provision directory
+      copy:
+        src: kops-key.pem
+        dest: k8s-provision/kops-key.pem
+        mode: '0400'
+
+    - name: Insert/Update inventory in k8s-provision/inventory
+      blockinfile:
+        path: k8s-provision/inventory
+        backup: yes
+        block: |
+          kops ansible_host= {{kopsHost_out.tagged_instances[0].private_ip}}
+          cntl ansible_host=127.0.0.1 ansible_connection=local
+
+          [kopssrvgrp]
+          kops
+          
+          [kops_inst:children]
+          kopssrvgrp
+
+          [kops_inst:children]
+          ansible_user=ubuntu
+          ansible_ssh_private_key_file=kops-key.pem
