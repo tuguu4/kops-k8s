@@ -1,0 +1,13 @@
+---
+- name: Install & Setup kubectl with user
+  hosts: kopssrvgrp
+  gather_facts: no
+  tasks:
+    - name: Download kubectl
+      get_url:
+        url: "https://dl.k8s.io/release/v1.27.3/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin
+        owner: ubuntu
+        group: ubuntu
+        mode: 0755
+        force: yes
