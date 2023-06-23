@@ -34,6 +34,10 @@
             from_port: 22
             to_port: 22
             cidr_ip: "{{MYIP}}"
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            groupt_id: "sg-0fe8c435c7dcc8729"
       register: kopsSG_out
 
     - name: Create kops host
