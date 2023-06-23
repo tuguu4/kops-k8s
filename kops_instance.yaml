@@ -73,5 +73,16 @@
         backup: yes
         block: |
           kopsHostid: {{kopsHost_out.tagged_instances[0].id}}
-          kopsHostid: {{kopsHost_out.tagged_instances[0].private_ip}}
+          kopsHostip: {{kopsHost_out.tagged_instances[0].private_ip}}
           kopsSGid: {{kopsSG_out.group_id}}
+
+    - name: Start existing instance
+      ec2:
+        instance_ids: '{{kopsHostid}}'
+        region: '{{region}}'
+        state: running
+        wait: yes
+        wait_timeout: 300
+        exact_count: 1
+        group_id: "{{kopsSG_out.group_id}}"
+        vpc_subnet_id: "{{subnetid}}"
