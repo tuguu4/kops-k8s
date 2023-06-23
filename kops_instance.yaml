@@ -35,11 +35,18 @@
             from_port: 22
             to_port: 22
             cidr_ip: "{{MYIP}}"
-          - proto: tcp
-            from_port: 22
-            to_port: 22
-            groupt_id: "sg-0fe8c435c7dcc8729"
       register: kopsSG_out
+
+    - name: Update Securiry Group
+      ec2_group:
+        name: kops-host-sg
+        description: Allow port 22 from everywhere and all port within sg
+        region: "{{region}}"
+        vpc_id: "{{vpcid}}"
+        purge_rules: no
+        rules:
+          - proto: all
+            group_id: "sg-0fe8c435c7dcc8729"
 
     - name: Create kops host
       ec2:
