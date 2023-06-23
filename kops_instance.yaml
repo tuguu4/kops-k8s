@@ -60,12 +60,12 @@
 #    - debug:
 #        var: kopsSG_out
 
-    - name: Insert/Update "kopsSGid" in vars/output_vars
-      blockinfile:
-        path: vars/output_vars
-        backup: yes
-        block: |
-          kopsSGid: {{kopsSG_out.group_id}}
+#    - name: Insert/Update "kopsSGid" in vars/output_vars
+#      blockinfile:
+#        path: vars/output_vars
+#        backup: yes
+#        block: |
+#          kopsSGid: {{kopsSG_out.group_id}}
 
     - name: Insert/Update kops host information in vars/output_vars
       blockinfile:
@@ -74,3 +74,4 @@
         block: |
           kopsHostid: {{kopsHost_out.tagged_instances[0].id}}
           kopsHostid: {{kopsHost_out.tagged_instances[0].private_ip}}
+          kopsSGid: {{kopsSG_out.group_id}}
