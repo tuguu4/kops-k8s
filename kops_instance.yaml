@@ -97,8 +97,8 @@
         path: k8s-provision/inventory
         backup: yes
         block: |
-          kops: {{kopsHost_out.tagged_instances[0].private_ip}}
-          cntl: 127.0.0.1 ansible_connection=local
+          kops ansible_host={{kopsHost_out.tagged_instances[0].private_ip}}
+          cntl ansible_host=127.0.0.1 ansible_connection=local
 
           [kopssrvgrp]
           kops
@@ -106,6 +106,6 @@
           [kops_inst:children]
           kopssrvgrp
 
-          [kops_inst:children]
+          [kops_inst:vars]
           ansible_user=ubuntu
           ansible_ssh_private_key_file=kops-key.pem
